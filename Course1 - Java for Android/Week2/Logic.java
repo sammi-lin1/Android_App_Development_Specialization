@@ -1,17 +1,18 @@
-package mooc.vandy.java4android.diamonds.logic;
+package mooc.vandy.java4android.birthday.logic;
 
-import mooc.vandy.java4android.diamonds.ui.OutputInterface;
+import java.util.Random;
+
+import mooc.vandy.java4android.birthday.ui.OutputInterface;
 
 /**
  * This is where the logic of this App is centralized for this assignment.
  * <p>
- * The assignments are designed this way to simplify your early
- * Android interactions.  Designing the assignments this way allows
- * you to first learn key 'Java' features without having to beforehand
- * learn the complexities of Android.
+ * The assignments are designed this way to simplify your early Android interactions.
+ * Designing the assignments this way allows you to first learn key 'Java' features without
+ * having to beforehand learn the complexities of Android.
  */
 public class Logic
-       implements LogicInterface {
+        implements LogicInterface {
     /**
      * This is a String to be used in Logging (if/when you decide you
      * need it for debugging).
@@ -21,100 +22,78 @@ public class Logic
     /**
      * This is the variable that stores our OutputInterface instance.
      * <p>
-     * This is how we will interact with the User Interface [MainActivity.java].
+     * This is how we will interact with the User Interface
+     * [MainActivity.java].
      * <p>
-     * It is called 'out' because it is where we 'out-put' our
+     * It is called 'mOut' because it is where we 'out-put' our
      * results. (It is also the 'in-put' from where we get values
-     * from, but it only needs 1 name, and 'out' is good enough).
+     * from, but it only needs 1 name, and 'mOut' is good enough).
      */
-    private OutputInterface mOut;
+    OutputInterface mOut;
 
     /**
      * This is the constructor of this class.
      * <p>
-     * It assigns the passed in [MainActivity] instance (which
-     * implements [OutputInterface]) to 'out'.
+     * It assigns the passed in [MainActivity] instance
+     * (which implements [OutputInterface]) to 'out'
      */
-    public Logic(OutputInterface out){
+    public Logic(OutputInterface out) {
         mOut = out;
     }
 
     /**
      * This is the method that will (eventually) get called when the
-     * on-screen button labeled 'Process...' is pressed.
+     * on-screen button labelled 'Process' is pressed.
      */
-    public void process(int size) {
-        int half = -(size+1);
-        int h = (2 * size) + 1;
-        int w = (2 * size) + 2;
+    public void process() {
+        int groupSize = mOut.getSize();
+        int simulationCount = mOut.getCount();
 
-        for(int i = 1; i <= h; i++){                                    //draws outer box
-            half++;
-            for (int j = 1; j <= w; j++) {
-                if((j == 1 || j == w) && (i == 1 || i == h) )
-                    mOut.print("+");
-                else if(!(j == 1 || j == w) && (i == 1 || i == h))
-                    mOut.print("-");
-                else if(!(i == 1 || i == h) && (j == 1 || j == w))
-                    mOut.print("|");
-                else {
-                    drawDiamond(size, i, j, half);
-                }
-            }
-            mOut.println();
+        if (groupSize < 2 || groupSize > 365) {
+            mOut.println("Error: Group Size must be in the range 2-365.");
+            return;
         }
+        if (!(simulationCount >= 1 && simulationCount <= 100000)) {
+            mOut.println("Error: Simulation Count must be in the range 1-100000.");
+            return;
+        }
+
+        double percent = calculate(groupSize, simulationCount);
+
+        // report results
+        mOut.println("For a group of " + groupSize + " people, the percentage "
+                + " of times that two people share the same birthday is "
+                + String.format("%.2f%% of the time.", percent));
+
     }
 
-    public void drawDiamond(int size, int i, int j, int half){          //draws diamond
-        int length;
-        if (half <= 0){
-            length = i * 2 - 2;
-        } else {
-            length = 2 * (i - half * 2) - 2;
-        }
-
-        int top = 1;
-        int bot = size * 2 + 1;
-        int mid = 1 + size;
-        int right = mid + (length/2);
-        int left = mid - (length/2-1);
-
-        if (j >= left && j <= right) {
-            if (j == left || j == right) {
-                if (i < mid && i > top) {
-                    if (j == left) {
-                        mOut.print("/");
-                    } else {
-                        mOut.print("\\");
-                    }
-
-                } else if (i == mid) {             //midpoint
-                    if (j == left) {
-                        mOut.print("<");
-                    } else {
-                        mOut.print(">");
-                    }
-
-                } else if (i > mid && i < bot) {
-                    if (j == left) {
-                        mOut.print("\\");
-                    } else {
-                        mOut.print("/");
-                    }
-                }
-            } else {
-                if (i % 2 == 0) {                //interchanges between "=" and "-"
-                    mOut.print("=");             //based on whether line is even/odd
-                } else {
-                    mOut.print("-");
+    /**
+     * This is the method that actually does the calculations.
+     * <p>
+     * We provide you this method that way we can test it with unit testing.
+            */
+    public double calculate(int size, int count) {
+        // TODO -- add your code here
+        Random r = new Random();
+        int duplicates = 0;
+        for (int i = 0; i < count; i++) {
+            int bday[] = new int[365];
+            r.setSeed(i+1);
+            for (int j = 0; j <size ; j++) {
+                int n = r.nextInt(365);
+                bday[n]++;
+                if(bday[n] >= 2) {
+                    duplicates++;
+                    break;
                 }
             }
-        } else {
-            mOut.print(" ");
         }
+        return duplicates * 100.0 / count;
     }
+        
 
-    // TODO -- add any helper methods here
 
+
+    // TODO -- add your helper methods here
     
 }
