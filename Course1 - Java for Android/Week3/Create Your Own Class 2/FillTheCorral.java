@@ -1,4 +1,4 @@
-package mooc.vandy.java4android.gate.logic;
+package mooc.vandy.java4android.gate.logic; 
 
 import java.util.Random;
 
