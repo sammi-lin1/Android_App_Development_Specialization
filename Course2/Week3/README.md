@@ -1,1 +1,1 @@
-# Watched and finished quizzes
+# Watched videos and finished quizzes
