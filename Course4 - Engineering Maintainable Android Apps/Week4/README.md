@@ -5,7 +5,7 @@ There are four main features of this app
 <br>
 
 1. Toast Button: Will say merry christmas in a toast message
-<br>
+
 2. Count Button: Will increment the number shown by 1
 <br>
 3. Random Button: Will show a random number, on a second fragment screen, between 0 and the number currently displayed
