@@ -1,5 +1,5 @@
 # Created a simple Number Generator App:
-There are four main features of this app
+There are four main features of this app, all of which are downloadable in the zip folder above
 <br>
 (NOTE: Please hit the surprise button last)
 <br>
